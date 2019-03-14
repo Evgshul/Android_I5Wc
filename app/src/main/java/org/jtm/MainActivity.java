@@ -1,5 +1,6 @@
 package org.jtm;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -32,18 +33,75 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO#1 — set initial background color of mainLayout to black
 
+
+
+
+        mainLayout.setBackgroundColor(Color.BLACK);
+
+
+        seekBarR.setOnSeekBarChangeListener(seekBarChangeListener);
+        seekBarG.setOnSeekBarChangeListener(seekBarChangeListener);
+        seekBarB.setOnSeekBarChangeListener(seekBarChangeListener);
+
         // TODO#2 — implement setOnSeekBarChangeListener(...) change listeners for seek bars
         // Call mainLayout.setBackgroundColor() to set background color of app according to the values of seek bars
+
 
     }
 
 
+
+    private SeekBar.OnSeekBarChangeListener seekBarChangeListener
+             = new SeekBar.OnSeekBarChangeListener()
+    {
+                @Override
+               public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                         colorR = seekBarR.getProgress();
+                         colorG = seekBarG.getProgress();
+                         colorB = seekBarB.getProgress();
+                         mainLayout.setBackgroundColor(getColor(getRedBar(), getGreenBar(), getBlueBar()));
+
+                         updateBackground();
+                     }
+                 @Override
+                 public void onStartTrackingTouch(SeekBar seekBar) {
+
+                     }
+
+                 @Override
+                 public void onStopTrackingTouch(SeekBar seekBar) {
+
+                     }
+             };
 
     // TODO#3 — Implement public getters and setters for seek bars for JUnit test
     // int getRedBar(), int getGreenBar(), int getBlueBar()
     // void setRedBar(int color), void setGreenBar(int color), setBlueBar(int color)
 
 
+    public int getRedBar() {
+        return colorR;
+    }
+
+    public void setRedBar(int colorR) {
+        this.colorR = colorR;
+    }
+
+    public int getGreenBar() {
+        return colorG;
+    }
+
+    public void setGreenBar(int colorG) {
+        this.colorG = colorG;
+    }
+
+    public int getBlueBar() {
+        return colorB;
+    }
+
+    public void setBlueBar(int colorB) {
+        this.colorB = colorB;
+    }
 
     /**
      * TODO — Use this method to set background color
@@ -53,8 +111,24 @@ public class MainActivity extends AppCompatActivity {
      * @param B — blue  color 0..255
      * @return — full color as integer with bytes: FFRRGGBB
      */
+    private void updateBackground() {
+        colorR = seekBarR.getProgress();
+        colorG = seekBarG.getProgress();
+        colorB = seekBarB.getProgress();
+        mainLayout.setBackgroundColor(
+                0xff000000
+                        + colorR * 0x10000
+                        + colorG * 0x100
+                        + colorB
+        );
+
+    }
+
     static int getColor(int R, int G, int B) {
         return 0xff000000 + R * 0x10000 + G * 0x100 + B;
     }
+
+
+
 
 }
